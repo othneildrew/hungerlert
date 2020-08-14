@@ -8,10 +8,11 @@ import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions'
 import logo from './assets/logo.png';
+import HomeScreen from './screens/HomeScreen';
 
 
 
-
+// Setup notification handler
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -21,20 +22,15 @@ Notifications.setNotificationHandler({
 });
 
 
-
-
-
 export default function App() {
-    const [ location, setLocation ] = useState(null);
-    const [ errorMsg, setErrorMsg ] = useState(null);
-    const [ expoPushToken, setExpoPushToken ] = useState('');
-    const [ notification, setNotification ] = useState(false);
-    const notificationListener = useRef();
-    const responseListener = useRef();
+    // const [ location, setLocation ] = useState(null);
+    // const [ errorMsg, setErrorMsg ] = useState(null);
+    // const [ expoPushToken, setExpoPushToken ] = useState('');
+    // const [ notification, setNotification ] = useState(false);
+    // const notificationListener = useRef();
+    // const responseListener = useRef();
 
-    // let mylocation = 'Waiting...';
-
-
+    // // let mylocation = 'Waiting...';
 
 
 
@@ -46,99 +42,101 @@ export default function App() {
 
 
 
-    const registerForPushNotificationsAsync = async () => {
-        let token;
-
-        if (Constants.isDevice) {
-            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-            let finalStatus = existingStatus;
-
-            if (existingStatus !== 'granted') {
-                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-                finalStatus = status;
-            }
-
-            if (finalStatus !== 'granted') {
-                alert('Failed to get push token for push notification!');
-                return;
-            }
-
-            token = (await Notifications.getExpoPushTokenAsync()).data;
-            console.log(token);
-        } 
-            else {
-                alert('Must use physical device for Push Notifications');
-            }
-
-        if (Platform.OS === 'android') {
-            Notifications.setNotificationChannelAsync('default', {
-                name: 'default',
-                importance: Notifications.AndroidImportance.MAX,
-                vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#FF231F7C',
-            });
-        }
-
-        return token;
-    }
 
 
+    // const registerForPushNotificationsAsync = async () => {
+    //     let token;
 
+    //     if (Constants.isDevice) {
+    //         const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    //         let finalStatus = existingStatus;
 
-    useEffect(() => {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    //         if (existingStatus !== 'granted') {
+    //             const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    //             finalStatus = status;
+    //         }
 
-        // This listener is fired whenever a notification is received while the app is foregrounded
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-        });
+    //         if (finalStatus !== 'granted') {
+    //             alert('Failed to get push token for push notification!');
+    //             return;
+    //         }
 
-        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-        });
+    //         token = (await Notifications.getExpoPushTokenAsync()).data;
+    //         console.log(token);
+    //     } 
+    //         else {
+    //             alert('Must use physical device for Push Notifications');
+    //         }
 
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener);
-            Notifications.removeNotificationSubscription(responseListener);
-        };
-    }, []);
+    //     if (Platform.OS === 'android') {
+    //         Notifications.setNotificationChannelAsync('default', {
+    //             name: 'default',
+    //             importance: Notifications.AndroidImportance.MAX,
+    //             vibrationPattern: [0, 250, 250, 250],
+    //             lightColor: '#FF231F7C',
+    //         });
+    //     }
+
+    //     return token;
+    // }
 
 
 
-    const getLocation = async () => {
-        let { status } = await Location.requestPermissionsAsync();
 
-        if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-        }
+    // useEffect(() => {
+    //     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
+    //     // This listener is fired whenever a notification is received while the app is foregrounded
+    //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+    //         setNotification(notification);
+    //     });
 
+    //     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+    //         console.log(response);
+    //     });
 
-
-        console.log(location)
-        alert(`Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}`);
-    }
-
-
-    
-
-
-    const sendPushNotificationAsync = () => {
-
-    }
+    //     return () => {
+    //         Notifications.removeNotificationSubscription(notificationListener);
+    //         Notifications.removeNotificationSubscription(responseListener);
+    //     };
+    // }, []);
 
 
+
+    // const getLocation = async () => {
+    //     let { status } = await Location.requestPermissionsAsync();
+
+    //     if (status !== 'granted') {
+    //         setErrorMsg('Permission to access location was denied');
+    //     }
+
+    //     let location = await Location.getCurrentPositionAsync({});
+    //     setLocation(location);
+
+
+
+    //     console.log(location)
+    //     alert(`Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}`);
+    // }
 
 
     
 
-    const sendHungerAlert = () => {
+
+    // const sendPushNotificationAsync = () => {
+
+    // }
 
 
-        getLocation();
+
+
+    
+
+    // const sendHungerAlert = () => {
+
+
+    //     getLocation();
 
 
 
@@ -161,7 +159,7 @@ export default function App() {
                 // alert(location);
                 // return coordinates;
             // }
-    }
+    // }
 
 
 
@@ -180,54 +178,6 @@ export default function App() {
 
 
     return (
-        <View style={styles.container}>
-            <Image source={logo} style={styles.logo} />
-
-            <Text>{expoPushToken}</Text>
-
-            <Text style={styles.instructions}>Alert nearby friends that you're hungry!</Text>
-
-            <TouchableOpacity style={styles.button} onPress={sendHungerAlert}>
-                <Text style={styles.buttonText}>Send Alert</Text>
-            </TouchableOpacity>
-
-            <StatusBar style="auto" />
-        </View>
+        <HomeScreen />
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f5ba67',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo: {
-        width: 256,
-        height: 256,
-    },
-    instructions: {
-        marginTop: 18,
-        color: '#000000',
-        fontSize: 18,
-        fontWeight: '600',
-    },
-    button: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 0,
-        margin: 25,
-        width: '88%',
-        height: 55,
-        borderRadius: 8,
-        backgroundColor: '#e76618',
-    },
-    buttonText: {
-        color: '#ffffff',
-        fontSize: 18,
-        fontWeight: '600'
-    }
-});
