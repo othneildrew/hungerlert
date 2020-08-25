@@ -3,12 +3,37 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
+import * as Expo from 'expo';
+import * as Google from 'expo-google-app-auth';
+import * as firebase from 'firebase';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions'
 import logo from './assets/logo.png';
 import HomeScreen from './screens/HomeScreen';
+
+
+
+var firebaseConfig = {
+    apiKey: "AIzaSyATMlUY9mpz7pBxnopxjlaOw0CmXLfBRt8",
+    authDomain: "hungerlert.firebaseapp.com",
+    databaseURL: "https://hungerlert.firebaseio.com",
+    projectId: "hungerlert",
+    storageBucket: "hungerlert.appspot.com",
+    messagingSenderId: "258249742651",
+    appId: "1:258249742651:web:a66009f77fbe04086c3f1e",
+    measurementId: "G-W9JTB9N5NJ"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+
+
+
+
+
+
 
 
 
